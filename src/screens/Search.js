@@ -1,13 +1,16 @@
 import * as React from 'react';
 import {
   Animated,
+  FlatList,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { colors, device, gStyle } from '../constants';
+import { useNavigation } from '@react-navigation/native';
 
 // components
 import PlaylistItem from '../components/PlaylistItem';
@@ -19,9 +22,36 @@ import SvgSearch from '../icons/Svg.Search';
 // mock data
 import browseAll from '../mockdata/searchBrowseAll.json';
 import topGenres from '../mockdata/searchTopGenres.json';
+import Context from '../context';
 
 function Search() {
   const scrollY = React.useRef(new Animated.Value(0)).current;
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [filteredData, setFilteredData] = React.useState([]);
+  const navigation = useNavigation();
+
+  const {
+    currentSongData,
+    showMusicBar,
+    updateState,
+    listFavorites,
+    dataLibrary
+  } = React.useContext(Context);
+
+  const handleSearch = (query) => {
+    if (query?.length == 0) {
+      setFilteredData([]);
+    }
+    setSearchQuery(query);
+    const filtered = dataLibrary
+      .filter(
+        (item) =>
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.artist.toLowerCase().includes(query.toLowerCase())
+      )
+      .sort((a, b) => b.rating - a.rating);
+    setFilteredData(filtered);
+  };
 
   // search start (24 horizontal padding )
   const searchStart = device.width - 48;
@@ -56,10 +86,55 @@ function Search() {
               <View style={gStyle.mR1}>
                 <SvgSearch />
               </View>
-              <Text style={styles.searchPlaceholderText}>
+              {/* <Text style={styles.searchPlaceholderText}>
                 Artists, songs or podcasts
-              </Text>
+              </Text> */}
+              <TextInput
+                style={styles.searchPlaceholderText}
+                placeholder="Artists, songs or podcasts"
+                value={searchQuery}
+                onChangeText={handleSearch}
+              />
             </TouchableOpacity>
+            {searchQuery.length > 0 &&
+              filteredData &&
+              filteredData?.length > 0 &&
+              filteredData.map((item) => (
+                <View key={item.id} style={styles.itemSearch}>
+                  <TouchableOpacity
+                    activeOpacity={gStyle.activeOpacity}
+                    style={gStyle.flex5}
+                    onPress={() => {
+                      updateState('currentSongData', {
+                        album: item?.album,
+                        artist: item?.artist,
+                        image: item?.image,
+                        length: 312,
+                        title: item?.title,
+                        url: item?.url,
+                        rating: item?.rating
+                      });
+                      updateState(
+                        'dataLibrary',
+                        dataLibrary?.map((el) => {
+                          if (el?.title === item?.title) {
+                            return { ...el, rating: el?.rating + 1 };
+                          }
+                          return el;
+                        })
+                      );
+                      navigation.navigate('ModalMusicPlayer');
+                    }}
+                  >
+                    <Text style={[styles.titleSearch, { color: colors.white }]}>
+                      {item.title}
+                    </Text>
+                    <View style={gStyle.flexRow}>
+                      <Text style={styles.artist}>{item.artist}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
           </Animated.View>
         </View>
 
@@ -151,6 +226,36 @@ const styles = StyleSheet.create({
     right: 24,
     top: device.web ? 40 : 78,
     width: 28
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333'
+  },
+  resultItem: {
+    padding: 10
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#ccc'
+  },
+  resultText: {
+    fontSize: 16,
+    color: '#fff'
+  },
+  itemSearch: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+    width: '100%'
+  },
+  titleSearch: {
+    ...gStyle.textSpotify16,
+    color: colors.white,
+    marginBottom: 4
+  },
+  artist: {
+    ...gStyle.textSpotify12,
+    color: colors.greyInactive
   }
 });
 

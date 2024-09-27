@@ -5,17 +5,65 @@
   "released": 2012,
   "title": "Born to Die",
   "tracks": [
-    { "title": "Born to Die", "seconds": 161 },
-    { "title": "Off to the Races", "seconds": 245 },
-    { "title": "Blue Jeans", "seconds": 288 },
-    { "title": "Video Games", "seconds": 215 },
-    { "title": "Diet Mountain Dew", "seconds": 345 },
-    { "title": "National Anthem", "seconds": 250 },
-    { "title": "Dark Paradise", "seconds": 287 },
-    { "title": "Radio", "seconds": 271 },
-    { "title": "Carmen", "seconds": 210 },
-    { "title": "Million Dollar Man", "seconds": 237 },
-    { "title": "Summertime Sadness", "seconds": 345 },
-    { "title": "This Is What Makes Us Girls", "seconds": 347 }
+    {
+      "title": "Born to Die",
+      "seconds": 161,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Off to the Races",
+      "seconds": 245,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Blue Jeans",
+      "seconds": 288,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Video Games",
+      "seconds": 215,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Diet Mountain Dew",
+      "seconds": 345,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "National Anthem",
+      "seconds": 250,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Dark Paradise",
+      "seconds": 287,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Radio",
+      "seconds": 271,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Carmen",
+      "seconds": 210,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Million Dollar Man",
+      "seconds": 237,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "Summertime Sadness",
+      "seconds": 345,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    },
+    {
+      "title": "This Is What Makes Us Girls",
+      "seconds": 347,
+      "url": "https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw"
+    }
   ]
 }

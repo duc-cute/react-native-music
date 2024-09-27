@@ -14,44 +14,81 @@ import Context from '../context';
 
 function ModalMusicPlayer(props) {
   // get main app state
-  const { currentSongData } = React.useContext(Context);
+  const { currentSongData, listFavorites, updateState } =
+    React.useContext(Context);
 
   // local state
-  const [favorited, setFavorited] = React.useState(false);
   const [paused, setPaused] = React.useState(true);
 
   const { navigation } = props;
 
   // ui state
-  const favoriteColor = favorited ? colors.brandPrimary : colors.white;
-  const favoriteIcon = favorited ? 'heart' : 'heart-o';
+  const favoriteColor = listFavorites?.some(
+    (el) => el?.title === currentSongData?.title
+  )
+    ? colors.brandPrimary
+    : colors.white;
+  const favoriteIcon = listFavorites?.some(
+    (el) => el?.title === currentSongData?.title
+  )
+    ? 'heart'
+    : 'heart-o';
   const iconPlay = paused ? 'play-circle' : 'pause-circle';
   const timePast = func.formatTime(0);
   const timeLeft = func.formatTime(currentSongData.length);
-
+  // console.log('currentSongData', currentSongData);
   return (
     <View style={gStyle.container}>
       <ModalHeader
         left={<Feather color={colors.greyLight} name="chevron-down" />}
         leftPress={() => navigation.goBack(null)}
         right={<Feather color={colors.greyLight} name="more-horizontal" />}
-        text={currentSongData.album}
+        text={currentSongData?.album}
       />
 
       <View style={gStyle.p3}>
-        <Image source={images[currentSongData.image]} style={styles.image} />
+        <Image
+          source={
+            currentSongData?.rating
+              ? { uri: currentSongData?.image }
+              : images[currentSongData?.image]
+          }
+          style={styles.image}
+        />
 
         <View style={[gStyle.flexRowSpace, styles.containerDetails]}>
           <View style={styles.containerSong}>
             <Text ellipsizeMode="tail" numberOfLines={1} style={styles.song}>
-              {currentSongData.title}
+              {currentSongData?.title}
             </Text>
-            <Text style={styles.artist}>{currentSongData.artist}</Text>
+            <Text style={styles.artist}>{currentSongData?.artist}</Text>
           </View>
           <View style={styles.containerFavorite}>
             <TouchIcon
               icon={<FontAwesome color={favoriteColor} name={favoriteIcon} />}
-              onPress={() => setFavorited(!favorited)}
+              onPress={() => {
+                if (
+                  listFavorites?.some(
+                    (el) => el?.title === currentSongData?.title
+                  )
+                ) {
+                  updateState(
+                    'listFavorites',
+                    listFavorites?.filter(
+                      (el) => el?.title !== currentSongData?.title
+                    )
+                  );
+                } else {
+                  updateState('listFavorites', [
+                    ...listFavorites,
+                    ...currentSongData
+                    // {
+                    //   title: currentSongData?.title,
+                    //   length: currentSongData?.length
+                    // }
+                  ]);
+                }
+              }}
             />
           </View>
         </View>
@@ -59,7 +96,7 @@ function ModalMusicPlayer(props) {
         <View style={styles.containerVolume}>
           <Slider
             minimumValue={0}
-            maximumValue={currentSongData.length}
+            maximumValue={currentSongData?.length}
             minimumTrackTintColor={colors.white}
             maximumTrackTintColor={colors.grey3}
           />
@@ -78,7 +115,17 @@ function ModalMusicPlayer(props) {
             <TouchIcon
               icon={<FontAwesome color={colors.white} name="step-backward" />}
               iconSize={32}
-              onPress={() => null}
+              onPress={() => {
+                const currentIndex = listFavorites.findIndex(
+                  (song) => song.title === currentSongData?.title
+                );
+
+                const prevSong =
+                  currentIndex !== -1 && currentIndex > 0
+                    ? listFavorites[currentIndex - 1]
+                    : listFavorites[listFavorites?.length - 1]; // Nếu là bài hát cuối cùng, nextSong sẽ là null
+                updateState('currentSongData', { ...prevSong, length: 312 });
+              }}
             />
             <View style={gStyle.pH3}>
               <TouchIcon
@@ -90,7 +137,18 @@ function ModalMusicPlayer(props) {
             <TouchIcon
               icon={<FontAwesome color={colors.white} name="step-forward" />}
               iconSize={32}
-              onPress={() => null}
+              onPress={() => {
+                const currentIndex = listFavorites.findIndex(
+                  (song) => song.title === currentSongData?.title
+                );
+
+                const nextSong =
+                  currentIndex !== -1 &&
+                  currentIndex + 1 < listFavorites?.length
+                    ? listFavorites[currentIndex + 1]
+                    : listFavorites[0]; // Nếu là bài hát cuối cùng, nextSong sẽ là null
+                updateState('currentSongData', { ...nextSong, length: 312 });
+              }}
             />
           </View>
           <TouchIcon

@@ -30,7 +30,7 @@ function Favorites({ navigation, route }) {
   const { title } = route.params;
 
   // get main app state
-  const { currentSongData, showMusicBar, updateState,listFavorites } =
+  const { currentSongData, showMusicBar, updateState, listFavorites } =
     React.useContext(Context);
 
   // local state
@@ -40,8 +40,6 @@ function Favorites({ navigation, route }) {
 
   // ui state
   const album = albums[title] || null;
-
-  
 
   const onToggleDownloaded = (val) => {
     // if web
@@ -195,19 +193,23 @@ function Favorites({ navigation, route }) {
             />
           </View>
 
-          {album.tracks &&
-            listFavorites.map((track,ind) => (
+          {listFavorites?.length > 0 &&
+            listFavorites?.map((track, ind) => (
               <LineItemSongV2
                 active={song === track.title}
                 downloaded={downloaded}
                 key={`${track.title}-${ind}`}
                 onPress={onChangeSong}
                 songData={{
-                  album: album.title,
-                  artist: album.artist,
-                  image: album.image,
-                  length: track.seconds,
-                  title: track.title
+                  album: track.album,
+                  artist: track.artist,
+                  image:
+                    track?.image ||
+                    'https://i1.sndcdn.com/artworks-fJ47RvWYE7weOhay-V5Qjyw-t500x500.jpg',
+                  length: track?.seconds || 420,
+                  title: track.title,
+                  url: track?.url,
+                  rating: track?.rating
                 }}
                 index={ind}
               />

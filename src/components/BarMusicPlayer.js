@@ -7,19 +7,24 @@ import { colors, device, gStyle } from '../constants';
 import Context from '../context';
 
 function BarMusicPlayer({ song }) {
-  console.log("song",song)
-  console.log("length",song?.length)
-  const { currentSongData, showMusicBar, updateState,listFavorites } =
-  React.useContext(Context);
+  const { currentSongData, showMusicBar, updateState, listFavorites } =
+    React.useContext(Context);
 
   const navigation = useNavigation();
 
   // local state
-  const [favorited, setFavorited] = React.useState(false);
   const [paused, setPaused] = React.useState(true);
 
-  const favoriteColor =listFavorites?.some(el => el?.title === song?.title)  ? colors.brandPrimary : colors.white;
-  const favoriteIcon = listFavorites?.some(el => el?.title === song?.title)   ? 'heart' : 'heart-o';
+  const favoriteColor =
+    listFavorites?.length > 0 &&
+    listFavorites?.some((el) => el?.title === song?.title)
+      ? colors.brandPrimary
+      : colors.white;
+  const favoriteIcon =
+    listFavorites?.length > 0 &&
+    listFavorites?.some((el) => el?.title === song?.title)
+      ? 'heart'
+      : 'heart-o';
   const iconPlay = paused ? 'play-circle' : 'pause-circle';
 
   return (
@@ -31,15 +36,17 @@ function BarMusicPlayer({ song }) {
       <TouchableOpacity
         activeOpacity={gStyle.activeOpacity}
         hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}
-        onPress={() =>{
-          if(listFavorites?.some(el => el?.title === song?.title)) {
-            updateState('listFavorites', listFavorites?.filter(el => el?.title !== song?.title));
-
-          }else {
-            updateState('listFavorites', [...listFavorites,
-            {title:song?.title,length:song?.length}
+        onPress={() => {
+          if (listFavorites?.some((el) => el?.title === song?.title)) {
+            updateState(
+              'listFavorites',
+              listFavorites?.filter((el) => el?.title !== song?.title)
+            );
+          } else {
+            updateState('listFavorites', [
+              ...listFavorites,
+              { title: song?.title, length: song?.length }
             ]);
-
           }
         }}
         style={styles.containerIcon}
@@ -50,8 +57,8 @@ function BarMusicPlayer({ song }) {
       {song && (
         <View>
           <View style={styles.containerSong}>
-            <Text style={styles.title}>{`${song.title} · `}</Text>
-            <Text style={styles.artist}>{song.artist}</Text>
+            <Text style={styles.title}>{`${song?.title} · `}</Text>
+            <Text style={styles.artist}>{song?.artist}</Text>
           </View>
           <View style={[gStyle.flexRowCenter, gStyle.mTHalf]}>
             <FontAwesome
@@ -84,7 +91,13 @@ BarMusicPlayer.propTypes = {
   // optional
   song: PropTypes.shape({
     artist: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    url: PropTypes.string,
+    artist: PropTypes.string,
+    image: PropTypes.string,
+    album: PropTypes.string,
+    rating: PropTypes.number
+    // id: PropTypes.number,
   })
 };
 

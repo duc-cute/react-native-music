@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // context
 import Context from './index';
+import dataLibrary from '../mockdata/data/library.json';
 
 class AppState extends React.Component {
   constructor() {
@@ -11,22 +12,17 @@ class AppState extends React.Component {
     this.state = {
       currentSongData: {
         album: 'Swimming',
-        artist: 'Mac Miller',
-        image: 'swimming',
-        length: 312,
-        title: 'So It Goes'
+        url: 'https://audio.jukehost.co.uk/vTRYaTEbpaYRCxiWGgL2S91mnOuMKfLw',
+        title: "Guess I'll Never Know",
+        artist: 'TrackTribe',
+        image: 'https://f4.bcbits.com/img/a3736661212_65',
+        rating: 1,
+        length: 312
       },
       isLoading: true,
       showMusicBar: true,
-      listFavorites:[
-          { "title": "The End", "seconds": 161 },
-          { "title": "Radioactive", "seconds": 245 },
-          { "title": "Pyro", "seconds": 288 },
-          { "title": "Mary", "seconds": 215 },
-          { "title": "The Face", "seconds": 345 },
-          { "title": "The Immortals", "seconds": 250 },
-      
-      ]
+      listFavorites: dataLibrary,
+      dataLibrary: dataLibrary
     };
 
     this.updateState = this.updateState.bind(this);
@@ -42,7 +38,13 @@ class AppState extends React.Component {
     const { children } = this.props;
 
     // app state
-    const { currentSongData, isLoading, showMusicBar,listFavorites } = this.state;
+    const {
+      currentSongData,
+      isLoading,
+      showMusicBar,
+      listFavorites,
+      dataLibrary
+    } = this.state;
 
     return (
       <Context.Provider
@@ -51,6 +53,7 @@ class AppState extends React.Component {
           isLoading,
           showMusicBar,
           listFavorites,
+          dataLibrary,
           updateState: this.updateState
         }}
       >
